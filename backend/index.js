@@ -35,9 +35,50 @@ app.get("/api/learn/:myId([0-9]+)", (req, res) => {
   pool.query(findByIdQuery, [myId], (error, results, fields) => {
     if (error) {
       console.error("Error executing query:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(404).json({ msg: err });
     } else {
       res.status(200).json(results);
+    }
+  });
+});
+
+// DELETE
+app.delete("/api/learn/:myId([0-9]+)", (req, res) => {
+  // get value from URL parameter
+  const myId = req.params.myId;
+  const deleteByIdQuery = `DELETE FROM learn WHERE id = ?`;
+
+  pool.query(deleteByIdQuery, [myId], (error, results, fields) => {
+    if (error) {
+      console.error("Error executing query:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+      // check if result object is sql affect rows are 0 not found
+    } else if (results.affectedRows === 0) {
+      res.status(404).json({ msg: "Not Found" });
+    } else {
+      res.status(200).json({ msg: "Deleted successfully" });
+    }
+  });
+});
+
+// HTTP POST function
+app.post("/api/learn", express.json(), (req, res) => {
+  const { finnish, english } = req.body;
+
+  const postTaskQuery = "INSERT INTO learn (finnish, english) VALUES (?, ?)";
+
+  pool.query(postTaskQuery, [finnish, english], (error, results, fields) => {
+    if (error) {
+      console.error("Error executing query:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      // making learning object where is database rows
+      const learning = {
+        id: results.insertId,
+        finnish,
+        english,
+      };
+      res.status(201).json({ msg: "Created successfully", learning });
     }
   });
 });
