@@ -3,6 +3,7 @@ const cors = require("cors");
 const express = require("express");
 const mysql = require("mysql");
 const app = express();
+const gracefulShutdown = require("./servershutdown");
 const config = require("./config");
 const port = 8080;
 var pool = mysql.createPool(config);
@@ -52,20 +53,5 @@ const server = app
     process.exit(1);
   });
 
-// Handle graceful shutdown
-const gracefulShutdown = () => {
-  console.log("Starting graceful shutdown...");
-  // Try to close the server and database connection
-  pool.end((err) => {
-    if (err) {
-      console.error("MYSQL: Error closing MySQL connection: ", err);
-    } else {
-      console.log("MySQL: Connection closed");
-    }
-    console.log("APPLICATION: Shutdown complete");
-    process.exit(1);
-  });
-};
-
-process.on("SIGTERM", gracefulShutdown); // Some other app requires shutdown.
-process.on("SIGINT", gracefulShutdown); // ctrl-c
+process.on("SIGTERM", () => gracefulShutdown(pool)); // Some other app requires shutdown.
+process.on("SIGINT", () => gracefulShutdown(pool)); // ctrl-c
