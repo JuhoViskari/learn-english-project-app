@@ -32,7 +32,7 @@ function App() {
       </div>
       <div id="learningfinnish">
         {/* Map through learning array and display each item */}
-        <h1>Suomesta englanniksi</h1>
+        <h1>English to finnish</h1>
         {learning.map((item) => (
           <div key={item.id}>
             {item.english} = {""} {item.finnish}
