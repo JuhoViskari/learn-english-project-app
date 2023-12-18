@@ -14,9 +14,9 @@ app.use(cors());
 
 // Define your route after the connection is established
 app.get("/api/learn", (req, res) => {
-  const query = "SELECT * FROM learn;";
+  const findAllQuery = "SELECT * FROM learn;";
 
-  pool.query(query, (error, results, fields) => {
+  pool.query(findAllQuery, (error, results, fields) => {
     if (error) {
       console.error("Error executing query:", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -29,9 +29,9 @@ app.get("/api/learn", (req, res) => {
 app.get("/api/learn/:myId([0-9]+)", (req, res) => {
   // get value from URL parameter
   const myId = req.params.myId;
-  const query = `SELECT * FROM learn where id = ?`;
+  const findByIdQuery = `SELECT * FROM learn where id = ?`;
 
-  pool.query(query, [myId], (error, results, fields) => {
+  pool.query(findByIdQuery, [myId], (error, results, fields) => {
     if (error) {
       console.error("Error executing query:", error);
       res.status(500).json({ error: "Internal Server Error" });
