@@ -1,24 +1,34 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 function App() {
   let [learning, setLearning] = useState([]);
-  const fetchIt = async () => {
-    let hr = await fetch("/api/learn");
-    let data = await hr.json();
-    setLearning(data);
-  };
 
-  let arr = learning.map((learning) => (
-    <li key={learning.id}>
-      Finnish: {learning.finnish}, english: {learning.english}
-    </li>
-  ));
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        // const response = await fetch("http://localhost:8080/api/learn"); developing
+        const response = await fetch("/api/learn");
+        const data = await response.json();
+        setLearning(data);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    };
+
+    // Call the fetchAll function to initiate data fetching
+    fetchAll();
+  }, []);
 
   return (
     <>
-      <h1>Learnings</h1>
-      <div id="learning">{arr}</div>
-      <button onClick={fetchIt}>Fetch</button>
+      <div id="learning">
+        {/* Map through learning array and display each item */}
+        {learning.map((item) => (
+          <div key={item.id}>
+            {item.finnish} = {""} {item.english}
+          </div>
+        ))}
+      </div>
     </>
   );
 }
