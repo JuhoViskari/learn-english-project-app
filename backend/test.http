@@ -1,1 +1,5 @@
+###fetch all
 get http://localhost:8080/api/learn/
+
+###fetch by id
+get http://localhost:8080/api/learn/1
