@@ -21,11 +21,21 @@ function App() {
 
   return (
     <>
-      <div id="learning">
+      <div id="learningenglish">
         {/* Map through learning array and display each item */}
+        <h1>Suomesta englanniksi</h1>
         {learning.map((item) => (
           <div key={item.id}>
             {item.finnish} = {""} {item.english}
+          </div>
+        ))}
+      </div>
+      <div id="learningfinnish">
+        {/* Map through learning array and display each item */}
+        <h1>Suomesta englanniksi</h1>
+        {learning.map((item) => (
+          <div key={item.id}>
+            {item.english} = {""} {item.finnish}
           </div>
         ))}
       </div>
