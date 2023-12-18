@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 function App() {
   let [learning, setLearning] = useState([]);
   const fetchIt = async () => {
-    let hr = await fetch("http://localhost:8080/api/learn");
+    let hr = await fetch("/api/learn");
     let data = await hr.json();
     setLearning(data);
   };
