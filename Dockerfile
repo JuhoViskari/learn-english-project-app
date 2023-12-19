@@ -7,7 +7,7 @@ FROM node:20.9.0-alpine as frontend-builder
 # Sets and creates the working directory inside the container to /app/frontend
 WORKDIR /app/frontend
 
-ENV NODE_ENV=production
+
 # Copy from local OS frontend package.json
 # and package-lock.json to the working directory
 COPY frontend/package*.json ./
