@@ -8,8 +8,8 @@ function LearnFinnish() {
     const fetchAll = async () => {
       try {
         //developing fetch
-        const response = await fetch("http://localhost:8080/api/learn");
-        // const response = await fetch("/api/learn");
+        // const response = await fetch("http://localhost:8080/api/learn");
+        const response = await fetch("/api/learn");
         const data = await response.json();
         setLearning(data);
         // Reset the current question when fetching new data

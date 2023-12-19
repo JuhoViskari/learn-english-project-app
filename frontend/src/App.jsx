@@ -10,25 +10,20 @@ function App() {
     <BrowserRouter>
       <div>
         <div className="topnav">
-          <NavLink
-            exact
-            to="/"
-            className="tehtava-button"
-            activeClassName="active"
-          >
+          <NavLink to="/" className="tehtava-button" activeclassname="active">
             Learn English
           </NavLink>
           <NavLink
             to="/learnfinnish"
             className="tehtava-button"
-            activeClassName="active"
+            activeclassname="active"
           >
             Learn Finnish
           </NavLink>
           <NavLink
             to="/admin"
             className="tehtava-button"
-            activeClassName="active"
+            activeclassname="active"
           >
             Admin
           </NavLink>

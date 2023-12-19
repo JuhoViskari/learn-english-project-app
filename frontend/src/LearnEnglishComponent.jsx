@@ -3,17 +3,18 @@ import React, { useState, useEffect } from "react";
 function LearnEnglish() {
   const [learning, setLearning] = useState([]);
   const [quessEnglish, setQuessEnglish] = useState([]);
+  const [feedback, setFeedback] = useState("");
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
         //developing fetch
-        const response = await fetch("http://localhost:8080/api/learn");
-        // const response = await fetch("/api/learn");
+        // const response = await fetch("http://localhost:8080/api/learn");
+        const response = await fetch("/api/learn");
         const data = await response.json();
         setLearning(data);
         // Reset the current question when fetching new data
-        setQuessEnglish(Array(data.lenght).fill(""));
+        setQuessEnglish(Array(data.length).fill(""));
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
@@ -24,10 +25,17 @@ function LearnEnglish() {
   }, []);
 
   // handle quess field
-  const handlequesses = (index, value) => {
+  const handlequesses = (index, value, item) => {
     const newGuesses = [...quessEnglish];
     newGuesses[index] = value;
     setQuessEnglish(newGuesses);
+
+    // check is value correct or incorrect
+    if (value.toLowerCase() === item.english.toLowerCase()) {
+      setFeedback("Oikein");
+    } else {
+      setFeedback(`Väärin, oikeavastaus: ${item.english}`);
+    }
   };
   return (
     <div id="learningenglish">
@@ -36,12 +44,14 @@ function LearnEnglish() {
       {learning.map((item, index) => (
         <div key={item.id}>
           {item.finnish} = {""}
-          {/* {input to text quessing english word} */}
+          {/* Input englannin kysymyksen arvaamiseen */}
           <input
             type="text"
             value={quessEnglish[index]}
-            onChange={(e) => handlequesses(index, e.target.value)}
+            onChange={(e) => handlequesses(index, e.target.value, item)}
           ></input>
+          {/*show feedback correct wrong */}
+          {feedback && <p>{feedback}</p>}
         </div>
       ))}
     </div>
