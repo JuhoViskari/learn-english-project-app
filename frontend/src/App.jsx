@@ -1,80 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import PropTypes from "prop-types";
+// App.jsx
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+import LearnEnglishComponent from "./LearnEnglishComponent.jsx";
+import LearnFinnishComponent from "./LearnFinnishComponent.jsx";
+import AdminComponent from "./AdminComponent.jsx";
+import MismatchComponent from "./MismatchComponent";
 
-function LearnEnglish({ learning }) {
-  return (
-    <div id="learningenglish">
-      {/* Map through learning array and display each item */}
-      <h1>Suomesta englanniksi</h1>
-      {learning.map((item) => (
-        <div key={item.id}>
-          {item.finnish} = {""} {item.english}
-        </div>
-      ))}
-    </div>
-  );
-}
-LearnEnglish.propTypes = {
-  learning: PropTypes.array.isRequired,
-};
-
-function LearnFinnish({ learning }) {
-  return (
-    <div id="learningfinnish">
-      {/* Map through learning array and display each item */}
-      <h1>English to Finnish</h1>
-      {learning.map((item) => (
-        <div key={item.id}>
-          {item.english} = {""} {item.finnish}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-LearnFinnish.propTypes = {
-  learning: PropTypes.array.isRequired,
-};
 function App() {
-  let [learning, setLearning] = useState([]);
-
-  useEffect(() => {
-    const fetchAll = async () => {
-      try {
-        //developing fetch
-        // const response = await fetch("http://localhost:8080/api/learn");
-        const response = await fetch("/api/learn");
-        const data = await response.json();
-        setLearning(data);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      }
-    };
-
-    // Call the fetchAll function to initiate data fetching
-    fetchAll();
-  }, []);
-
   return (
-    <Router>
-      <div className="topnav">
-        <Link to="/" className="active">
-          Learn English
-        </Link>
-        <Link to="/learn-finnish">Learn Finnish</Link>
-        <Link to="/admin">Admin</Link>
-      </div>
+    <BrowserRouter>
+      <div>
+        <div className="topnav">
+          <NavLink
+            exact
+            to="/"
+            className="tehtava-button"
+            activeClassName="active"
+          >
+            Learn English
+          </NavLink>
+          <NavLink
+            to="/learnfinnish"
+            className="tehtava-button"
+            activeClassName="active"
+          >
+            Learn Finnish
+          </NavLink>
+          <NavLink
+            to="/admin"
+            className="tehtava-button"
+            activeClassName="active"
+          >
+            Admin
+          </NavLink>
+        </div>
 
-      <Routes>
-        <Route path="/" element={<LearnEnglish learning={learning} />} />
-        <Route
-          path="/learn-finnish"
-          element={<LearnFinnish learning={learning} />}
-        />
-        {/* <Route path="/admin" element={<LearnEnglish learning={learning} />} /> */}
-      </Routes>
-    </Router>
+        <Routes>
+          <Route path="/" element={<LearnEnglishComponent />} />
+          <Route path="/learnfinnish" element={<LearnFinnishComponent />} />
+          <Route path="/admin" element={<AdminComponent />} />
+          <Route path="*" element={<MismatchComponent />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
+
 export default App;
