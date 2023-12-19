@@ -4,6 +4,7 @@ function LearnEnglish() {
   const [learning, setLearning] = useState([]);
   const [quessEnglish, setQuessEnglish] = useState([]);
   const [feedback, setFeedback] = useState("");
+  const [countCorrectAnswers, setCountCorrectAnswers] = useState([]);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -15,6 +16,8 @@ function LearnEnglish() {
         setLearning(data);
         // Reset the current question when fetching new data
         setQuessEnglish(Array(data.length).fill(""));
+        // reset correct answers when fetch new data
+        setCountCorrectAnswers(0);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
@@ -33,6 +36,8 @@ function LearnEnglish() {
     // check is value correct or incorrect
     if (value.toLowerCase() === item.english.toLowerCase()) {
       setFeedback("Oikein");
+      //increment correct answers
+      setCountCorrectAnswers(countCorrectAnswers + 1);
     } else {
       setFeedback(`Väärin, oikeavastaus: ${item.english}`);
     }
@@ -50,6 +55,8 @@ function LearnEnglish() {
             value={quessEnglish[index]}
             onChange={(e) => handlequesses(index, e.target.value, item)}
           ></input>
+          {/* Display total correct answers */}
+          <p>Oikein vastatut: {countCorrectAnswers}</p>
           {/*show feedback correct wrong */}
           {feedback && <p>{feedback}</p>}
         </div>
