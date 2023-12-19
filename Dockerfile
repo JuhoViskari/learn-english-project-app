@@ -1,3 +1,4 @@
+
 ## STAGE 1
 
 # Use a lightweight Node.js image as a base for building the frontend
@@ -10,8 +11,8 @@ WORKDIR /app/frontend
 # and package-lock.json to the working directory
 COPY frontend/package*.json ./
 
-# Install dependencies using npm ci
-RUN npm ci
+# Install dependencies defined in package-lock.json
+RUN npm install
 
 # Copy all frontend source code to the working directory
 # node_modules excluded (.dockerignore)
