@@ -1,38 +1,47 @@
-// App.jsx
-import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
-import MainComponent from "./MainComponent";
-import EnglishComponent from "./EnglishComponent.jsx";
-import AdminComponent from "./AdminComponent.jsx";
-import MismatchComponent from "./MismatchComponent";
+import React, { useState, useEffect } from "react";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <div>
-        <div className="topnav">
-          <NavLink exact to="/" className="nav-button" activeClassName="active">
-            Learn English
-          </NavLink>
-          <NavLink
-            to="/english"
-            className="nav-button"
-            activeClassName="active"
-          >
-            Learn Finnish
-          </NavLink>
-          <NavLink to="/staff" className="nav-button" activeClassName="active">
-            Staff
-          </NavLink>
-        </div>
+  let [learning, setLearning] = useState([]);
 
-        <Routes>
-          <Route path="/" element={<MainComponent />} />
-          <Route path="/english" element={<EnglishComponent />} />
-          <Route path="/staff" element={<AdminComponent />} />
-          <Route path="*" element={<MismatchComponent />} />
-        </Routes>
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        //developing fetch
+        // const response = await fetch("http://localhost:8080/api/learn");
+        const response = await fetch("/api/learn");
+        const data = await response.json();
+        setLearning(data);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    };
+
+    // Call the fetchAll function to initiate data fetching
+    fetchAll();
+  }, []);
+
+  return (
+    <>
+      <div id="learningenglish">
+        {/* Map through learning array and display each item */}
+        <h1>Suomesta englanniksi</h1>
+        {learning.map((item) => (
+          <div key={item.id}>
+            {item.finnish} = {""} {item.english}
+          </div>
+        ))}
+
+        <div id="learningfinnish">
+          {/* Map through learning array and display each item */}
+          <h1>English to finnish</h1>
+          {learning.map((item) => (
+            <div key={item.id}>
+              {item.english} = {""} {item.finnish}
+            </div>
+          ))}
+        </div>
       </div>
-    </BrowserRouter>
+    </>
   );
 }
 
