@@ -52,6 +52,8 @@ function LearnEnglish() {
           {/* Input englannin kysymyksen arvaamiseen */}
           <input
             type="text"
+            id="questin"
+            name="question"
             value={quessEnglish[index]}
             onChange={(e) => handlequesses(index, e.target.value, item)}
           ></input>
