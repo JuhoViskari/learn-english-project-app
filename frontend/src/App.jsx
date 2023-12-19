@@ -1,6 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { Link, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
+function LearnEnglish({ learning }) {
+  return (
+    <div id="learningenglish">
+      {/* Map through learning array and display each item */}
+      <h1>Suomesta englanniksi</h1>
+      {learning.map((item) => (
+        <div key={item.id}>
+          {item.finnish} = {""} {item.english}
+        </div>
+      ))}
+    </div>
+  );
+}
+LearnEnglish.propTypes = {
+  learning: PropTypes.array.isRequired,
+};
+
+function LearnFinnish({ learning }) {
+  return (
+    <div id="learningfinnish">
+      {/* Map through learning array and display each item */}
+      <h1>English to Finnish</h1>
+      {learning.map((item) => (
+        <div key={item.id}>
+          {item.english} = {""} {item.finnish}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+LearnFinnish.propTypes = {
+  learning: PropTypes.array.isRequired,
+};
 function App() {
   let [learning, setLearning] = useState([]);
 
@@ -22,39 +57,24 @@ function App() {
   }, []);
 
   return (
-    <>
-      {" "}
+    <Router>
       <div className="topnav">
         <Link to="/" className="active">
-          Home
+          Learn English
         </Link>
-        <Link to="/learn-english">Learn English</Link>
         <Link to="/learn-finnish">Learn Finnish</Link>
+        <Link to="/admin">Admin</Link>
       </div>
-      <Route path="/" exact>
-        <div id="learningenglish">
-          {/* Map through learning array and display each item */}
-          <h1>Suomesta englanniksi</h1>
-          {learning.map((item) => (
-            <div key={item.id}>
-              {item.finnish} = {""} {item.english}
-            </div>
-          ))}
-        </div>
-      </Route>
-      <Route path="/learn-finnish">
-        <div id="learningfinnish">
-          {/* Map through learning array and display each item */}
-          <h1>English to Finnish</h1>
-          {learning.map((item) => (
-            <div key={item.id}>
-              {item.english} = {""} {item.finnish}
-            </div>
-          ))}
-        </div>
-      </Route>
-    </>
+
+      <Routes>
+        <Route path="/" element={<LearnEnglish learning={learning} />} />
+        <Route
+          path="/learn-finnish"
+          element={<LearnFinnish learning={learning} />}
+        />
+        {/* <Route path="/admin" element={<LearnEnglish learning={learning} />} /> */}
+      </Routes>
+    </Router>
   );
 }
-
 export default App;
