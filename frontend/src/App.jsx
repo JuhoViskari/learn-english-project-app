@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link, Route } from "react-router-dom";
 
 function App() {
   let [learning, setLearning] = useState([]);
@@ -22,25 +23,36 @@ function App() {
 
   return (
     <>
-      <div id="learningenglish">
-        {/* Map through learning array and display each item */}
-        <h1>Suomesta englanniksi</h1>
-        {learning.map((item) => (
-          <div key={item.id}>
-            {item.finnish} = {""} {item.english}
-          </div>
-        ))}
-
+      {" "}
+      <div className="topnav">
+        <Link to="/" className="active">
+          Home
+        </Link>
+        <Link to="/learn-english">Learn English</Link>
+        <Link to="/learn-finnish">Learn Finnish</Link>
+      </div>
+      <Route path="/" exact>
+        <div id="learningenglish">
+          {/* Map through learning array and display each item */}
+          <h1>Suomesta englanniksi</h1>
+          {learning.map((item) => (
+            <div key={item.id}>
+              {item.finnish} = {""} {item.english}
+            </div>
+          ))}
+        </div>
+      </Route>
+      <Route path="/learn-finnish">
         <div id="learningfinnish">
           {/* Map through learning array and display each item */}
-          <h1>English to finnish</h1>
+          <h1>English to Finnish</h1>
           {learning.map((item) => (
             <div key={item.id}>
               {item.english} = {""} {item.finnish}
             </div>
           ))}
         </div>
-      </div>
+      </Route>
     </>
   );
 }
