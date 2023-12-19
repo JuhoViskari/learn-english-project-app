@@ -1,6 +1,5 @@
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-
 import PropTypes from "prop-types";
 
 function LearnEnglish({ learning }) {
@@ -39,15 +38,13 @@ LearnFinnish.propTypes = {
 };
 function App() {
   let [learning, setLearning] = useState([]);
+
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const response = await fetch("/api/learn");
+        //developing fetch
         // const response = await fetch("http://localhost:8080/api/learn");
-        if (!response.ok) {
-          console.error("Error response from server:", await response.text());
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+        const response = await fetch("/api/learn");
         const data = await response.json();
         setLearning(data);
       } catch (error) {
