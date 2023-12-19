@@ -8,10 +8,10 @@ get http://localhost:8080/api/learn/1
 delete http://localhost:8080/api/learn/2
 
 ### post
-POST http://localhost:8080/
+POST http://localhost:8080/api/learn
 Content-Type: application/json
 
 {
-  "finnish": "Kilpikonna",
-  "english": "Turtle"
+  "finnish": "Rumilus kissanpentu",
+  "english": "Ugly pussycat"
 }
