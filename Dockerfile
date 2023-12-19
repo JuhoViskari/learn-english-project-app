@@ -1,4 +1,3 @@
-
 ## STAGE 1
 
 # Use a lightweight Node.js image as a base for building the frontend
@@ -7,13 +6,12 @@ FROM node:20.9.0-alpine as frontend-builder
 # Sets and creates the working directory inside the container to /app/frontend
 WORKDIR /app/frontend
 
-
 # Copy from local OS frontend package.json
 # and package-lock.json to the working directory
 COPY frontend/package*.json ./
 
-# Install dependencies defined in package-lock.json
-RUN npm install
+# Install dependencies using npm ci
+RUN npm ci
 
 # Copy all frontend source code to the working directory
 # node_modules excluded (.dockerignore)
