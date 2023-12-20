@@ -3,19 +3,21 @@ import React, { useState, useEffect } from "react";
 function LearnEnglish() {
   const [learning, setLearning] = useState([]);
   const [quessEnglish, setQuessEnglish] = useState([]);
-  const [feedback, setFeedback] = useState("");
+  const [feedback, setFeedback] = useState([]);
   const [countCorrectAnswers, setCountCorrectAnswers] = useState([]);
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
         //developing fetch
-        // const response = await fetch("http://localhost:8080/api/learn");
-        const response = await fetch("/api/learn");
+        const response = await fetch("http://localhost:8080/api/learn");
+        // const response = await fetch("/api/learn");
         const data = await response.json();
-        setLearning(data);
-        // Reset the current question when fetching new data
-        setQuessEnglish(Array(data.length).fill(""));
+        // call randomized data
+        const shuffledLearning = shuffle(data);
+        setLearning(shuffledLearning);
+        // Reset the current question when fetching new random data
+        setQuessEnglish(Array(shuffledLearning.length).fill(""));
         // reset correct answers when fetch new data
         setCountCorrectAnswers(0);
       } catch (error) {
@@ -28,41 +30,68 @@ function LearnEnglish() {
   }, []);
 
   // handle quess field
-  const handlequesses = (index, value, item) => {
+  const handlequesses = (index, value) => {
     const newGuesses = [...quessEnglish];
     newGuesses[index] = value;
     setQuessEnglish(newGuesses);
-
-    // check is value correct or incorrect
-    if (value.toLowerCase() === item.english.toLowerCase()) {
-      setFeedback("Oikein");
-      //increment correct answers
-      setCountCorrectAnswers(countCorrectAnswers + 1);
-    } else {
-      setFeedback(`Väärin, oikeavastaus: ${item.english}`);
-    }
+    //increment correct answers
   };
+  // check is value correct or incorrect map item and index
+  const handleCheckButton = () => {
+    const newFeedback = learning.map((item, index) => {
+      const value = quessEnglish[index].toLowerCase();
+      if (value === item.english.toLowerCase()) {
+        setCountCorrectAnswers(countCorrectAnswers + 1);
+        return "✅";
+      } else {
+        return `❌ ${item.english}`;
+      }
+    });
+
+    // state variable get parameter newFeedBack
+    setFeedback(newFeedback);
+    // if fb === with correct answers filter lenght
+    const newCountCorrectAnswers = newFeedback.filter(
+      (fb) => fb === "✅"
+    ).length;
+    setCountCorrectAnswers(newCountCorrectAnswers);
+  };
+
+  // randomize words to quess
+  const shuffle = (array) => {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
+    }
+    return shuffledArray;
+  };
+
   return (
     <div id="learningenglish">
-      {/* Map through learning array and display each item */}
       <h1>Suomesta englanniksi</h1>
+      {/* Map through learning array and display each item */}
       {learning.map((item, index) => (
-        <div key={item.id}>
-          {item.finnish} = {""}
-          {/* Input englannin kysymyksen arvaamiseen */}
+        <div key={item.id} style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ marginRight: "10px" }}>{item.finnish}</div>
+          {/* Input to guess */}
           <input
             type="text"
-            id="questin"
-            name="question"
+            id={`questin-${index}`}
+            name={`question-${index}`}
             value={quessEnglish[index]}
             onChange={(e) => handlequesses(index, e.target.value, item)}
-          ></input>
+          />
+          <span style={{ marginLeft: "10px" }}>{feedback[index]}</span>
           {/* Display total correct answers */}
-          <p>Oikein vastatut: {countCorrectAnswers}</p>
           {/*show feedback correct wrong */}
-          {feedback && <p>{feedback}</p>}
         </div>
       ))}
+      <button onClick={handleCheckButton}>Tarkista</button>
+      <p>Oikein vastatut: {countCorrectAnswers}</p>
     </div>
   );
 }
