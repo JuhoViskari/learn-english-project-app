@@ -12,6 +12,6 @@ POST http://localhost:8080/api/learn
 Content-Type: application/json
 
 {
-  "finnish": "Tietokone",
-  "english": "Knowledgemachine"
+  "finnish": "Karkki",
+  "english": "Candy"
 }
