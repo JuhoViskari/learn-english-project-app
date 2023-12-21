@@ -5,7 +5,7 @@ get http://localhost:8080/api/learn/
 get http://localhost:8080/api/learn/1
 
 ### delete by id
-delete http://localhost:8080/api/learn/2
+delete http://localhost:8080/api/learn/23
 
 ### post
 POST http://localhost:8080/api/learn

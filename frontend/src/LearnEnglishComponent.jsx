@@ -5,7 +5,8 @@ function LearnEnglish() {
   const [quessEnglish, setQuessEnglish] = useState([]);
   const [feedback, setFeedback] = useState([]);
   const [countCorrectAnswers, setCountCorrectAnswers] = useState([]);
-
+  // total count of questions
+  const TotalQuestions = learning.length;
   useEffect(() => {
     const fetchAll = async () => {
       try {
@@ -15,9 +16,11 @@ function LearnEnglish() {
         const data = await response.json();
         // call randomized data
         const shuffledLearning = shuffle(data);
-        setLearning(shuffledLearning);
+        // intialize 10 limit
+        const showTenItems = shuffledLearning.slice(0, 10);
+        setLearning(showTenItems);
         // Reset the current question when fetching new random data
-        setQuessEnglish(Array(shuffledLearning.length).fill(""));
+        setQuessEnglish(Array(showTenItems.length).fill(""));
         // reset correct answers when fetch new data
         setCountCorrectAnswers(0);
       } catch (error) {
@@ -91,7 +94,18 @@ function LearnEnglish() {
         </div>
       ))}
       <button onClick={handleCheckButton}>Tarkista</button>
-      <p>Oikein vastatut: {countCorrectAnswers}</p>
+      <p>
+        Oikein vastatut: {countCorrectAnswers}/{TotalQuestions}
+      </p>
+      <p style={{ fontSize: "50px" }}>
+        {countCorrectAnswers === 0
+          ? " "
+          : countCorrectAnswers >= 0
+          ? "😵‍💫"
+          : countCorrectAnswers < 10
+          ? "😎"
+          : "🎉🤩"}
+      </p>
     </div>
   );
 }

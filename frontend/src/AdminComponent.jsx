@@ -58,7 +58,7 @@ const AdminPage = () => {
           body: JSON.stringify({ finnish, english }),
         });
 
-        // if hr not OK throw error
+        // if response not OK throw error
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
