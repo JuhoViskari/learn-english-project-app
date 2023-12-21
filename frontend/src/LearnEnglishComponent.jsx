@@ -100,7 +100,7 @@ function LearnEnglish() {
       <p style={{ fontSize: "50px" }}>
         {countCorrectAnswers === 0
           ? " "
-          : countCorrectAnswers >= 0
+          : countCorrectAnswers < 5
           ? "😵‍💫"
           : countCorrectAnswers < 10
           ? "😎"
