@@ -26,16 +26,16 @@ const AdminPage = () => {
 
   // handle input change if word is same
   // add value with state variable
-  const handleInputChange = (index) => {
-    const { word, value } = index.target;
-    if (word === "finnish") {
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "finnish") {
       setFinnish(value);
-    } else if (word === "english") {
+    } else if (name === "english") {
       setEnglish(value);
     }
   };
 
-  // HTTP POST TO ADD WORDS Function
+  // HTTP POST TO ADD WORDS Functiondasd
   const PostWords = async () => {
     try {
       // if finnish and english have no text throw error
