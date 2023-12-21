@@ -34,13 +34,13 @@ function LearnEnglish() {
     const newGuesses = [...quessEnglish];
     newGuesses[index] = value;
     setQuessEnglish(newGuesses);
-    //increment correct answers
   };
   // check is value correct or incorrect map item and index
   const handleCheckButton = () => {
     const newFeedback = learning.map((item, index) => {
       const value = quessEnglish[index].toLowerCase();
       if (value === item.english.toLowerCase()) {
+        //increment correct answers
         setCountCorrectAnswers(countCorrectAnswers + 1);
         return "✅";
       } else {
