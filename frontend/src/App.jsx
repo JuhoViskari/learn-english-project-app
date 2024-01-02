@@ -1,5 +1,5 @@
 // App.jsx
-import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+import { HashRouter, Routes, Route, NavLink } from "react-router-dom";
 import LearnEnglishComponent from "./LearnEnglishComponent.jsx";
 import LearnFinnishComponent from "./LearnFinnishComponent.jsx";
 import AdminComponent from "./AdminComponent.jsx";
@@ -7,7 +7,7 @@ import MismatchComponent from "./MismatchComponent";
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div>
         <div className="topnav">
           <NavLink to="/" className="tehtava-button" activeclassname="active">
@@ -36,7 +36,7 @@ function App() {
           <Route path="*" element={<MismatchComponent />} />
         </Routes>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
