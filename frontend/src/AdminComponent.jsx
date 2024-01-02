@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // const response = await fetch("http://localhost:8080/api/learn");
 // const response = await fetch("/api/learn");
@@ -6,7 +6,29 @@ const AdminPage = () => {
   const [english, setEnglish] = useState("");
   const [finnish, setFinnish] = useState("");
   const [message, setMessage] = useState("");
+  const [Deletemessage, setDeleteMessage] = useState("");
   const [error, setError] = useState(null);
+  const [learning, setLearning] = useState([]);
+  const [quessFinnish, setQuessFinnish] = useState([]);
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        //developing fetch
+        const response = await fetch("http://localhost:8080/api/learn");
+        // const response = await fetch("/api/learn");
+        const data = await response.json();
+        setLearning(data);
+        // Reset the current question when fetching new data
+        setQuessFinnish(Array(data.lenght).fill(""));
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    };
+
+    // Call the fetchAll function to initiate data fetching
+    fetchAll();
+  }, []);
 
   // styling Admin page
   const AboutPageStyle = {
@@ -18,14 +40,21 @@ const AdminPage = () => {
 
   // styling Admin page
   const AboutPageParagStyle = {
-    textAlign: "center",
-    padding: "20px",
-    border: "solid",
-    backgroundColor: "lightblue",
+    height: "350px",
+    width: "350px",
+    border: " 1px solid #ccc",
+    font: "16px/26px Georgia",
+    Garamond: "Serif",
+    overflow: "auto",
+    margin: "auto",
+    position: "top",
+    top: "0",
+    bottom: "0",
+    left: "0",
+    right: "0",
   };
 
-  // handle input change if word is same
-  // add value with state variable
+  // check that both inputs have words or letter
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name === "finnish") {
@@ -35,7 +64,7 @@ const AdminPage = () => {
     }
   };
 
-  // HTTP POST TO ADD WORDS Functiondasd
+  // HTTP POST TO ADD WORDS Function
   const PostWords = async () => {
     try {
       // if finnish and english have no text throw error
@@ -50,7 +79,7 @@ const AdminPage = () => {
 
       // http fetch if result OK make http post
       if (result) {
-        const response = await fetch(`/api/learn`, {
+        const response = await fetch(`http://localhost:8080/api/learn`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -66,25 +95,71 @@ const AdminPage = () => {
         setMessage("Words added successfully");
         setError(null);
         console.log("Successful POST request");
+
+        // Fetch the updated data after succesful post
+        const fetchDataResponse = await fetch(
+          "http://localhost:8080/api/learn"
+        );
+        const updatedData = await fetchDataResponse.json();
+        setLearning(updatedData);
+        // Reset
+        setQuessFinnish(Array(updatedData.length).fill(""));
       }
     } catch (error) {
       setError(error.message);
       console.error("Error during POST request", error);
     }
   };
-
+  // DeleteData
+  const DeleteData = async (id, finnish, english) => {
+    try {
+      // show confirm delete
+      const confirmDelete = window.confirm(
+        `Do you want to delete Finnish: ${finnish}, English: ${english}?`
+      );
+      if (confirmDelete) {
+        await fetch(`http://localhost:8080/api/learn/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setDeleteMessage("Word deleted successfully");
+        const response = await fetch("http://localhost:8080/api/learn/");
+        const data = await response.json();
+        setLearning(data);
+        // clear the selected task
+        setQuessFinnish(Array(data.length).fill(""));
+      }
+    } catch (error) {
+      console.error("Error deleting data:", error);
+    }
+  };
   return (
     <div>
-      <h1 style={AboutPageStyle}>About Page</h1>
+      <h1 style={AboutPageStyle}>Admin Page</h1>
+
       <p style={AboutPageParagStyle}>
-        <img
-          src="https://homepages.tuni.fi/juho.viskari/loppu/koski.jpg"
-          alt="Koski"
-          style={{ maxWidth: "100%" }}
-        />
-        <br></br>
-        Tässä on minun ottama kuva Tammerkoskesta keväällä 2023 copyright: Juho
-        Viskari
+        <div id="admin-fetch">
+          {/* Map through learning array and display each item */}
+
+          {learning.map((item) => (
+            <div key={item.id}>
+              {item.finnish}
+              {" = "}
+              {item.english}{" "}
+              <button
+                className="btn"
+                onClick={() => DeleteData(item.id, item.finnish, item.english)}
+              >
+                <i className="fa fa-trash"></i>
+              </button>
+            </div>
+          ))}
+        </div>
+      </p>
+      <p style={{ textAlign: "center", color: "green", fontSize: "20px" }}>
+        {Deletemessage}
       </p>
       <h1>ADD WORDS</h1>
       <input
