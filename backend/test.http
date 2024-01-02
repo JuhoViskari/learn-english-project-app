@@ -16,10 +16,10 @@ Content-Type: application/json
   "english": "Candy"
 }
 ### PATCH TEST
-PATCH http://localhost:8080/api/learn/18
+PATCH http://localhost:8080/api/learn/45
 Content-Type: application/json
 
 {
-  "finnish": "Mug",
-  "english": "Muki"
+  "finnish": "Jääkiekko",
+  "english": "Ice Hockey"
 }
