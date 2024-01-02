@@ -1,4 +1,5 @@
 require("dotenv").config();
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const express = require("express");
 const mysql = require("mysql");
@@ -83,6 +84,27 @@ app.post("/api/learn", express.json(), (req, res) => {
   });
 });
 
+app.patch("/api/learn/:myId([0-9]+)", express.json(), (req, res) => {
+  const myId = req.params.myId;
+  const { english, finnish } = req.body;
+
+  const updateQuery = `UPDATE learn SET finnish = ?, english = ? WHERE id = ?`;
+
+  pool.query(
+    updateQuery,
+    [finnish, english, myId],
+    (error, results, fields) => {
+      if (error) {
+        console.error("Error executing query:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+      } else if (results.affectedRows === 0) {
+        res.status(404).json({ msg: "Not Found" });
+      } else {
+        res.status(200).json({ msg: "modified successfully" });
+      }
+    }
+  );
+});
 // Start the server
 const server = app
   .listen(port, () => {
