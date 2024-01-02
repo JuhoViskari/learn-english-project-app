@@ -14,9 +14,9 @@ const AdminPage = () => {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        //developing fetch
-        const response = await fetch("http://localhost:8080/api/learn");
-        // const response = await fetch("/api/learn");
+        //fetch
+        const response = await fetch("/api/learn");
+
         const data = await response.json();
         setLearning(data);
         // Reset the current question when fetching new data
@@ -79,7 +79,7 @@ const AdminPage = () => {
 
       // http fetch if result OK make http post
       if (result) {
-        const response = await fetch(`http://localhost:8080/api/learn`, {
+        const response = await fetch(`/api/learn`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -97,9 +97,7 @@ const AdminPage = () => {
         console.log("Successful POST request");
 
         // Fetch the updated data after succesful post
-        const fetchDataResponse = await fetch(
-          "http://localhost:8080/api/learn"
-        );
+        const fetchDataResponse = await fetch("/api/learn");
         const updatedData = await fetchDataResponse.json();
         setLearning(updatedData);
         // Reset
@@ -118,14 +116,14 @@ const AdminPage = () => {
         `Do you want to delete Finnish: ${finnish}, English: ${english}?`
       );
       if (confirmDelete) {
-        await fetch(`http://localhost:8080/api/learn/${id}`, {
+        await fetch(`/api/learn/${id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
           },
         });
         setDeleteMessage("Word deleted successfully");
-        const response = await fetch("http://localhost:8080/api/learn/");
+        const response = await fetch("/api/learn");
         const data = await response.json();
         setLearning(data);
         // clear the selected task
