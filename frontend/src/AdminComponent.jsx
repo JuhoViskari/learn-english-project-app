@@ -61,13 +61,14 @@ const AdminPage = () => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name === "finnish") {
-      setFinnish(value);
+      setFinnish(value !== "" ? value : finnish);
     } else if (name === "english") {
       setEnglish(value);
     } else if (name === "editedFinnish") {
       setEditedFinnish(value);
     } else if (name === "editedEnglish") {
-      setEditedEnglish(value);
+      // set only if not empty
+      setEditedEnglish(value !== "" ? value : editedEnglish);
     }
   };
 
