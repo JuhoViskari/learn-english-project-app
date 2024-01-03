@@ -270,8 +270,12 @@ const AdminPage = () => {
       <p style={{ textAlign: "center", color: "green", fontSize: "20px" }}>
         {Deletemessage}
       </p>
-      <h1>ADD WORDS</h1>
+      <h1 style={{ fontSize: "20px", textAlign: "center" }}>ADD WORDS</h1>
       <input
+        style={{
+          margin: "0 auto",
+          display: "block",
+        }}
         type="text"
         id={`finnish`}
         name={`finnish`}
@@ -281,6 +285,10 @@ const AdminPage = () => {
       />
       <br />
       <input
+        style={{
+          margin: "0 auto",
+          display: "block",
+        }}
         type="text"
         id={`english`}
         name={`english`}
@@ -289,7 +297,15 @@ const AdminPage = () => {
         onChange={handleInputChange}
       />
       <br />
-      <button onClick={PostWords}>Add Words</button>
+      <button
+        style={{
+          margin: "0 auto",
+          display: "block",
+        }}
+        onClick={PostWords}
+      >
+        Add Words
+      </button>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <p>{message}</p>
     </div>

@@ -21,3 +21,68 @@
   background-color: #04aa6d;
   color: white;
 }
+#learningenglish {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+}
+
+div {
+  margin-bottom: 10px;
+}
+
+input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100px;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+p {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+span {
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+/* Emoji styles */
+p.style-emoji {
+  font-size: 50px;
+  margin-top: 20px;
+}
+
+/* Emoji Face styles */
+.emoji-face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+}
