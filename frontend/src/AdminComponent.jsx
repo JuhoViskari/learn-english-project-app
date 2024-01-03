@@ -151,7 +151,7 @@ const AdminPage = () => {
     }
   };
 
-  const ModifyData = async (id, finnish, english) => {
+  const ModifyData = async (id, originalFinnish, originalEnglish) => {
     try {
       const confirmPatch = window.confirm(
         `Do you want to change ${finnish}, English ${english}`
@@ -163,7 +163,10 @@ const AdminPage = () => {
             "Content-Type": "application/json",
           },
 
-          body: JSON.stringify({ finnish, english }),
+          body: JSON.stringify({
+            finnish: editedFinnish || originalFinnish,
+            english: editedEnglish || originalEnglish,
+          }),
         });
 
         setEditMode(null); // Disable edit mode after modifying data
