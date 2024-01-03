@@ -13,6 +13,9 @@ const AdminPage = () => {
   const [editMode, setEditMode] = useState(null);
   const [editedFinnish, setEditedFinnish] = useState("");
   const [editedEnglish, setEditedEnglish] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -175,6 +178,38 @@ const AdminPage = () => {
     setEditedFinnish("");
     setEditedEnglish("");
   };
+
+  // login to adminpage
+  const handleLogin = () => {
+    // Replace this with your actual authentication logic
+    if (username === "admin" && password === "password") {
+      setLoggedIn(true);
+    } else {
+      alert("Invalid username or password");
+    }
+  };
+  if (!loggedIn) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "50px" }}>
+        <h2>Login to Admin Page</h2>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <br />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <br />
+        <button onClick={handleLogin}>Login</button>
+      </div>
+    );
+  }
   return (
     <div>
       <h1 style={AboutPageStyle}>Admin Page</h1>
