@@ -57,18 +57,27 @@ const AdminPage = () => {
     right: "0",
   };
 
+  const handleFinnishChange = (event) => {
+    const { value } = event.target;
+    setEditedFinnish(value);
+  };
+
+  const handleEnglishChange = (event) => {
+    const { value } = event.target;
+    setEditedEnglish(value);
+  };
+
   // check that both inputs have words or letter
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name === "finnish") {
-      setFinnish(value !== "" ? value : finnish);
+      setFinnish(value);
     } else if (name === "english") {
       setEnglish(value);
     } else if (name === "editedFinnish") {
-      setEditedFinnish(value);
+      handleFinnishChange(event);
     } else if (name === "editedEnglish") {
-      // set only if not empty
-      setEditedEnglish(value !== "" ? value : editedEnglish);
+      handleEnglishChange(event);
     }
   };
 
@@ -190,7 +199,7 @@ const AdminPage = () => {
                     name={`editedFinnish`}
                     placeholder="Edit Finnish word"
                     value={editedFinnish || item.finnish}
-                    onChange={handleInputChange}
+                    onChange={handleFinnishChange}
                   />
                   <br />
                   <input
@@ -199,7 +208,7 @@ const AdminPage = () => {
                     name={`editedEnglish`}
                     placeholder="Edit English word"
                     value={editedEnglish || item.english}
-                    onChange={handleInputChange}
+                    onChange={handleEnglishChange}
                   />
                   <br />
                   <button
