@@ -23,7 +23,7 @@ const AdminPage = () => {
         const data = await response.json();
         setLearning(data);
         // Reset the current question when fetching new data
-        setQuessFinnish(Array(data.length).fill(""));
+        setQuessFinnish(Array(data.lenght).fill(""));
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
@@ -57,20 +57,6 @@ const AdminPage = () => {
     right: "0",
   };
 
-  const handleFinnishChange = (event) => {
-    const { value } = event.target;
-    // this should do to prevent that input field does not empty if user
-    // dont give any value
-    setEditedFinnish((prevValue) => (value !== "" ? value : prevValue));
-  };
-
-  const handleEnglishChange = (event) => {
-    const { value } = event.target;
-    // this should do to prevent that input field does not empty if user
-    // dont give any value
-    setEditedEnglish((prevValue) => (value !== "" ? value : prevValue));
-  };
-
   // check that both inputs have words or letter
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -78,6 +64,10 @@ const AdminPage = () => {
       setFinnish(value);
     } else if (name === "english") {
       setEnglish(value);
+    } else if (name === "editedFinnish") {
+      setEditedFinnish(value);
+    } else if (name === "editedEnglish") {
+      setEditedEnglish(value);
     }
   };
 
@@ -117,7 +107,7 @@ const AdminPage = () => {
         const fetchDataResponse = await fetch("/api/learn");
         const updatedData = await fetchDataResponse.json();
         setLearning(updatedData);
-        // Resetd
+        // Reset
         setQuessFinnish(Array(updatedData.length).fill(""));
       }
     } catch (error) {
@@ -151,7 +141,7 @@ const AdminPage = () => {
     }
   };
 
-  const ModifyData = async (id, originalFinnish, originalEnglish) => {
+  const ModifyData = async (id, finnish, english) => {
     try {
       const confirmPatch = window.confirm(
         `Do you want to change ${finnish}, English ${english}`
@@ -162,10 +152,9 @@ const AdminPage = () => {
           headers: {
             "Content-Type": "application/json",
           },
-
           body: JSON.stringify({
-            finnish: editedFinnish || originalFinnish,
-            english: editedEnglish || originalEnglish,
+            finnish,
+            english,
           }),
         });
 
@@ -183,67 +172,66 @@ const AdminPage = () => {
 
   const toggleEditMode = (index) => {
     setEditMode(editMode === index ? null : index);
+    setEditedFinnish("");
+    setEditedEnglish("");
   };
   return (
     <div>
       <h1 style={AboutPageStyle}>Admin Page</h1>
-
-      <p style={AboutPageParagStyle}>
-        <div id="admin-fetch">
-          {/* Map through learning array and display each item */}
-          {learning.map((item, index) => (
-            <div key={item.id}>
-              {editMode === index ? (
-                // Input area for editing
-                <>
-                  <input
-                    type="text"
-                    id={`editedFinnish`}
-                    name={`editedFinnish`}
-                    placeholder="Edit Finnish word"
-                    value={editedFinnish || item.finnish}
-                    onChange={handleFinnishChange}
-                  />
-                  <br />
-                  <input
-                    type="text"
-                    id={`editedEnglish`}
-                    name={`editedEnglish`}
-                    placeholder="Edit English word"
-                    value={editedEnglish || item.english}
-                    onChange={handleEnglishChange}
-                  />
-                  <br />
-                  <button
-                    className="btn"
-                    onClick={() =>
-                      ModifyData(item.id, editedFinnish, editedEnglish)
-                    }
-                  >
-                    Save
-                  </button>
-                </>
-              ) : (
-                // Display area
-                <>
-                  {item.finnish} = {item.english}{" "}
-                  <button
-                    className="btn"
-                    onClick={() =>
-                      DeleteData(item.id, item.finnish, item.english)
-                    }
-                  >
-                    <i className="fa fa-trash"></i>
-                  </button>
-                  <button className="btn" onClick={() => toggleEditMode(index)}>
-                    <i className="fa fa-edit"></i>
-                  </button>
-                </>
-              )}
-            </div>
-          ))}
-        </div>
-      </p>
+      <div style={AboutPageParagStyle} id="admin-fetch">
+        {/* Map through learning array and display each item */}
+        {learning.map((item, index) => (
+          <div key={item.id}>
+            {editMode === index ? (
+              // Input area for editing
+              <>
+                <input
+                  type="text"
+                  id={`editedFinnish`}
+                  name={`editedFinnish`}
+                  placeholder="Edit Finnish word"
+                  value={editedFinnish !== "" ? editedFinnish : item.finnish}
+                  onChange={handleInputChange}
+                />
+                <br />
+                <input
+                  type="text"
+                  id={`editedEnglish`}
+                  name={`editedEnglish`}
+                  placeholder="Edit English word"
+                  value={editedEnglish !== "" ? editedEnglish : item.english}
+                  onChange={handleInputChange}
+                />
+                <br />
+                <button
+                  className="btn"
+                  onClick={() =>
+                    ModifyData(item.id, editedFinnish, editedEnglish)
+                  }
+                >
+                  Save
+                </button>
+              </>
+            ) : (
+              // Display area
+              <>
+                {item.finnish} = {item.english}{" "}
+                <button
+                  className="btn"
+                  onClick={() =>
+                    DeleteData(item.id, item.finnish, item.english)
+                  }
+                >
+                  <i className="fa fa-trash"></i>
+                </button>
+                <button className="btn" onClick={() => toggleEditMode(index)}>
+                  <i className="fa fa-edit"></i>
+                </button>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
       <p style={{ textAlign: "center", color: "green", fontSize: "20px" }}>
         {Deletemessage}
       </p>
