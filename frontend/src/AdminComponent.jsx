@@ -117,7 +117,7 @@ const AdminPage = () => {
         const fetchDataResponse = await fetch("/api/learn");
         const updatedData = await fetchDataResponse.json();
         setLearning(updatedData);
-        // Reset
+        // Resetd
         setQuessFinnish(Array(updatedData.length).fill(""));
       }
     } catch (error) {
