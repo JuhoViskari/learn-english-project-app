@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./finnish.css";
 
 function LearnFinnish() {
   const [learning, setLearning] = useState([]);
