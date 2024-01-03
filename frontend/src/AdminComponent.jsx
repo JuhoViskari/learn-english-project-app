@@ -66,6 +66,8 @@ const AdminPage = () => {
 
   const handleEnglishChange = (event) => {
     const { value } = event.target;
+    // this should do to prevent that input field does not empty if user
+    // dont give any value
     setEditedEnglish((prevValue) => (value !== "" ? value : prevValue));
   };
 
@@ -76,10 +78,6 @@ const AdminPage = () => {
       setFinnish(value);
     } else if (name === "english") {
       setEnglish(value);
-    } else if (name === "editedFinnish") {
-      handleFinnishChange(event);
-    } else if (name === "editedEnglish") {
-      handleEnglishChange(event);
     }
   };
 
