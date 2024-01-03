@@ -23,7 +23,7 @@ const AdminPage = () => {
         const data = await response.json();
         setLearning(data);
         // Reset the current question when fetching new data
-        setQuessFinnish(Array(data.lenght).fill(""));
+        setQuessFinnish(Array(data.length).fill(""));
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
