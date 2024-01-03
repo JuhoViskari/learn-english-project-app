@@ -59,12 +59,14 @@ const AdminPage = () => {
 
   const handleFinnishChange = (event) => {
     const { value } = event.target;
-    setEditedFinnish(value);
+    // this should do to prevent that input field does not empty if user
+    // dont give any value
+    setEditedFinnish((prevValue) => (value !== "" ? value : prevValue));
   };
 
   const handleEnglishChange = (event) => {
     const { value } = event.target;
-    setEditedEnglish(value);
+    setEditedEnglish((prevValue) => (value !== "" ? value : prevValue));
   };
 
   // check that both inputs have words or letter
