@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
-
+/**
+ * LearnFinnish component for user to learn Finnish
+ *
+ * @component
+ * @description This have same documentations with LearnEnglish Component
+ * only that there is english and finnish items different way
+ *
+ * // Usage of LearnEnglish component
+ * <LearnEnglish />
+ *
+ * @returns {JSX.Element} The JSX representation of the LearnEnglish component.
+ */
 function LearnFinnish() {
   const [learning, setLearning] = useState([]);
   const [quessFinnish, setQuessFinnish] = useState([]);

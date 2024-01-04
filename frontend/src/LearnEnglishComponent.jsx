@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-
+/**
+ * LearnEnglish component for user to learn English
+ *
+ * @component
+ * @example
+ * // Usage of LearnEnglish component
+ * <LearnEnglish />
+ *
+ * @returns {JSX.Element} The JSX representation of the LearnEnglish component.
+ */
 function LearnEnglish() {
   const [learning, setLearning] = useState([]);
   const [quessEnglish, setQuessEnglish] = useState([]);
@@ -7,7 +16,20 @@ function LearnEnglish() {
   const [countCorrectAnswers, setCountCorrectAnswers] = useState([]);
   // total count of questions
   const TotalQuestions = learning.length;
+
+  /**
+   * useEffect hook to fetch learning data when the component mounts.
+   */
   useEffect(() => {
+    /**
+     * Fetch all learning data from the server and randomize data and
+     * showing 10 words.
+     *
+     * @async
+     * @function
+     * @name fetchAll
+     * @throws {Error} If there is an error fetching data.
+     */
     const fetchAll = async () => {
       try {
         //developing fetch
@@ -32,19 +54,41 @@ function LearnEnglish() {
     fetchAll();
   }, []);
 
-  // handle quess field
+  /**
+   * Update the user's guesses for the English translations of displayed words.
+   *
+   * @function
+   * @name handlequesses
+   * @param {number} index - The index of the word in the displayed list.
+   * @param {string} value - The user's guess for the English translation.
+   * @returns {void} This function does not return a value.
+   */
   const handlequesses = (index, value) => {
+    // copy current guess array
     const newGuesses = [...quessEnglish];
+    // Update the guess to specific word
     newGuesses[index] = value;
     setQuessEnglish(newGuesses);
   };
+  /**
+   * Check user guesses are it's correct and give feedback
+   *
+   * @function
+   * @name handleCheckButton
+   * @param {number} index - The index of the word in the displayed list.
+   * @param {string} value - The user's guess for the English translation.
+   * @returns {Array<string>} An array containing feedback for each word.
+   */
   // check is value correct or incorrect map item and index
   const handleCheckButton = () => {
     const newFeedback = learning.map((item, index) => {
+      // user guess for correct answer convert lowercase
       const value = quessEnglish[index].toLowerCase();
+      // check is user guess correct
       if (value === item.english.toLowerCase()) {
-        //increment correct answers
+        //increment count of correct answers
         setCountCorrectAnswers(countCorrectAnswers + 1);
+        // feedbacks for correct answers if wrong give correct answer
         return "✅";
       } else {
         return `❌ ${item.english}`;
@@ -60,11 +104,21 @@ function LearnEnglish() {
     setCountCorrectAnswers(newCountCorrectAnswers);
   };
 
-  // randomize words to quess
+  /**
+   * Randomize the order of elements in an array using the Fisher-Yates shuffle algorithm.
+   *
+   * @function
+   * @name shuffle
+   * @param {Array} array - The array to be shuffled.
+   * @returns {Array} A new array with elements in a randomized order.
+   */
   const shuffle = (array) => {
+    //copy of array modifying original array
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
+      // randomise
       const j = Math.floor(Math.random() * (i + 1));
+      // swap element at indices i and j
       [shuffledArray[i], shuffledArray[j]] = [
         shuffledArray[j],
         shuffledArray[i],
@@ -75,7 +129,7 @@ function LearnEnglish() {
 
   return (
     <div id="learningenglish">
-      <h1>Suomesta englanniksi</h1>
+      <h1>Suomesta englanniksi 🏴󠁧󠁢󠁥󠁮󠁧󠁿</h1>
       {/* Map through learning array and display each item */}
       {learning.map((item, index) => (
         <div key={item.id} style={{ display: "flex", alignItems: "center" }}>

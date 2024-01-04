@@ -2,6 +2,17 @@ import React, { useState, useEffect } from "react";
 
 // const response = await fetch("http://localhost:8080/api/learn");
 // const response = await fetch("/api/learn");
+
+/**
+ * AdminPage component for managing and displaying words in the 'learn' table.
+ *
+ * @component
+ * @example
+ * // Usage of AdminPage component
+ * <AdminPage />
+ *
+ * @returns {JSX.Element} The JSX representation of the AdminPage component.
+ */
 const AdminPage = () => {
   const [english, setEnglish] = useState("");
   const [finnish, setFinnish] = useState("");
@@ -17,12 +28,22 @@ const AdminPage = () => {
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
 
+  /**
+   * useEffect hook to fetch learning data when the component mounts.
+   */
   useEffect(() => {
+    /**
+     * Fetch all learning data from the server.
+     *
+     * @async
+     * @function
+     * @name fetchAll
+     * @throws {Error} If there is an error fetching data.
+     */
     const fetchAll = async () => {
       try {
         //fetch
         const response = await fetch("/api/learn");
-
         const data = await response.json();
         setLearning(data);
         // Reset the current question when fetching new data
@@ -59,8 +80,14 @@ const AdminPage = () => {
     left: "0",
     right: "0",
   };
-
-  // check that both inputs have words or letter
+  /**
+   * Check that both inputs have words or letters and update state
+   *
+   *
+   * @function
+   * @name handleInputChange
+   * @param {object} event - The input change event.
+   */
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name === "finnish") {
@@ -73,13 +100,22 @@ const AdminPage = () => {
       setEditedEnglish(value);
     }
   };
-
-  // HTTP POST TO ADD WORDS Function
+  /**
+   * Perform a POST request to add words to the 'learn' table.
+   *
+   * @async
+   * @function
+   * @name PostWords
+   * @throws {Error} If Finnish and English words are not provided.
+   * @throws {Error} If there is an HTTP error during the request.
+   * @returns {Promise<void>} A Promise that resolves when the POST request
+   * is completed successfully.
+   */
   const PostWords = async () => {
     try {
       // if finnish and english have no text throw error
       if (!finnish || !english) {
-        throw new Error("Finnish and English words are required");
+        throw new Error("Both Finnish and English words are required");
       }
 
       // else show confirm alert to proceed
@@ -87,7 +123,7 @@ const AdminPage = () => {
         `Do you want to add Words with Finnish: ${finnish}, English: ${english}?`
       );
 
-      // http fetch if result OK make http post
+      // http fetch if user confirm OK make http post
       if (result) {
         const response = await fetch(`/api/learn`, {
           method: "POST",
@@ -118,13 +154,27 @@ const AdminPage = () => {
       console.error("Error during POST request", error);
     }
   };
-  // DeleteData
+
+  /**
+   * Perform a DELETE request to delete words from the 'learn' table.
+   *
+   * @async
+   * @function
+   * @name DeleteData
+   * @param {number} id - ID of the record to be deleted.
+   * @param {string} finnish - Delete finnish content of the record
+   * @param {string} english - Delete english content of the record
+   * @throws {Error} If there is an error deleting data.
+   * @returns {Promise<void>} A Promise that resolves when the DELETE request
+   * is completed successfully.
+   */
   const DeleteData = async (id, finnish, english) => {
     try {
       // show confirm delete
       const confirmDelete = window.confirm(
         `Do you want to delete Finnish: ${finnish}, English: ${english}?`
       );
+      // if user confirm delete by id
       if (confirmDelete) {
         await fetch(`/api/learn/${id}`, {
           method: "DELETE",
@@ -132,7 +182,9 @@ const AdminPage = () => {
             "Content-Type": "application/json",
           },
         });
+        // tell user deleted succesfully
         setDeleteMessage("Word deleted successfully");
+        // fetch all after delete
         const response = await fetch("/api/learn");
         const data = await response.json();
         setLearning(data);
@@ -143,12 +195,26 @@ const AdminPage = () => {
       console.error("Error deleting data:", error);
     }
   };
-
+  /**
+   * Modify data in the 'learn' table using a PATCH request.
+   *
+   * @async
+   * @function
+   * @name ModifyData
+   * @param {number} id - The ID of the record to be modified.
+   * @param {string} finnish - Update finnish content of the record
+   * @param {string} english - Update english content of the record
+   * @throws {Error} If there is an error modifying data.
+   * @returns {Promise<void>} A Promise that resolves when the PATCH request
+   * is completed successfully.
+   */
   const ModifyData = async (id, finnish, english) => {
     try {
+      // show confirm new values
       const confirmPatch = window.confirm(
         `Do you want to change ${finnish}, English ${english}`
       );
+      // if new records are ok update new values
       if (confirmPatch) {
         await fetch(`/api/learn/${id}`, {
           method: "PATCH",
@@ -161,8 +227,9 @@ const AdminPage = () => {
           }),
         });
 
-        setEditMode(null); // Disable edit mode after modifying data
-
+        // Disable edit mode after modifying data
+        setEditMode(null);
+        // fetch all after update
         const response = await fetch("/api/learn");
         const data = await response.json();
         setLearning(data);
@@ -172,22 +239,35 @@ const AdminPage = () => {
       console.error("Error modifying data:", error);
     }
   };
-
+  /**
+   * Toggle edit mode for a specific record.
+   *
+   * @function
+   * @name toggleEditMode
+   * @param {number} index - The index of the record to toggle edit mode.
+   * @returns {void} This function does not return a value.
+   */
   const toggleEditMode = (index) => {
     setEditMode(editMode === index ? null : index);
     setEditedFinnish("");
     setEditedEnglish("");
   };
 
-  // login to adminpage
+  /**
+   * Functional component for handling user login.
+   *
+   * @function
+   * @name Login
+   * @returns {JSX.Element} The login form or the Admin Page if already logged in.
+   */
   const handleLogin = () => {
-    // Replace this with your actual authentication logic
     if (username === "admin" && password === "password") {
       setLoggedIn(true);
     } else {
       alert("Invalid username or password");
     }
   };
+  // check if user is not logged in show username and password inputs
   if (!loggedIn) {
     return (
       <div style={{ textAlign: "center", marginTop: "50px" }}>
