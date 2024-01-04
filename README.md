@@ -17,9 +17,9 @@ Juho Viskari
 
 # Screenshots
 
-![Alt text](ad.png "Optional Title")
 ![Alt text](le.png "Optional Title")
 ![Alt text](login.png "Optional Title")
+![Alt text](ad.png "Optional Title" | width=50%)
 
 # Tech/framework used
 
