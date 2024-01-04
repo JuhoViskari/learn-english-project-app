@@ -17,9 +17,9 @@ Juho Viskari
 
 # Screenshots
 
-![Alt text](learnenglish.PNG "Optional Title")
-![Alt text](login.PNG "login")
-![Alt text](adminpage.PNG "login")
+![Alt text](ad.PNG "Optional Title")
+![Alt text](le.PNG "Optional Title")
+![Alt text](login.PNG "Optional Title")
 
 # Tech/framework used
 
