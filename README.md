@@ -16,9 +16,10 @@ Password: password
 Juho Viskari
 
 # Screenshots
-![Alt text](ad.PNG "Optional Title")
-![Alt text](le.PNG "Optional Title")
-![Alt text](login.PNG "Optional Title")
+
+![Alt text](ad.png "Optional Title")
+![Alt text](le.png "Optional Title")
+![Alt text](login.png "Optional Title")
 
 # Tech/framework used
 
