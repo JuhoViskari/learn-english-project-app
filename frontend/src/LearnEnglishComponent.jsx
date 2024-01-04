@@ -129,7 +129,7 @@ function LearnEnglish() {
 
   return (
     <div id="learningenglish">
-      <h1>Suomesta englanniksi 🏴󠁧󠁢󠁥󠁮󠁧󠁿</h1>
+      <h1>Suomesta englanniksi</h1>
       {/* Map through learning array and display each item */}
       {learning.map((item, index) => (
         <div key={item.id} style={{ display: "flex", alignItems: "center" }}>
