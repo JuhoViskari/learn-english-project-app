@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: LearnFinnishComponent.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: LearnFinnishComponent.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from "react";
+/**
+ * LearnFinnish component for user to learn Finnish
+ *
+ * @component
+ * @description This have same documentations with LearnEnglish Component
+ * only that there is english and finnish items different way
+ *
+ * // Usage of LearnEnglish component
+ * &lt;LearnEnglish />
+ *
+ * @returns {JSX.Element} The JSX representation of the LearnEnglish component.
+ */
+function LearnFinnish() {
+  const [learning, setLearning] = useState([]);
+  const [quessFinnish, setQuessFinnish] = useState([]);
+  const [feedback, setFeedback] = useState([]);
+  const [countCorrectAnswers, setCountCorrectAnswers] = useState([]);
+  // total count of questions
+  const TotalQuestions = learning.length;
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        //developing fetch
+        // const response = await fetch("http://localhost:8080/api/learn");
+        const response = await fetch("/api/learn");
+        const data = await response.json();
+        // call randomized data
+        const shuffledLearning = shuffle(data);
+        // intialize 10 limit
+        const showTenItems = shuffledLearning.slice(0, 10);
+        setLearning(showTenItems);
+        // Reset the current question when fetching new random data
+        setQuessFinnish(Array(showTenItems.length).fill(""));
+        // reset correct answers when fetch new data
+        setCountCorrectAnswers(0);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    };
+
+    // Call the fetchAll function to initiate data fetching
+    fetchAll();
+  }, []);
+
+  // handle quess field
+  const handlequesses = (index, value) => {
+    const newGuesses = [...quessFinnish];
+    newGuesses[index] = value;
+    setQuessFinnish(newGuesses);
+  };
+  // check is value correct or incorrect map item and index
+  const handleCheckButton = () => {
+    const newFeedback = learning.map((item, index) => {
+      const value = quessFinnish[index].toLowerCase();
+      if (value === item.finnish.toLowerCase()) {
+        //increment correct answers
+        setCountCorrectAnswers(countCorrectAnswers + 1);
+        return "✅";
+      } else {
+        return `❌ ${item.finnish}`;
+      }
+    });
+
+    // state variable get parameter newFeedBack
+    setFeedback(newFeedback);
+    // if fb === with correct answers filter lenght
+    const newCountCorrectAnswers = newFeedback.filter(
+      (fb) => fb === "✅"
+    ).length;
+    setCountCorrectAnswers(newCountCorrectAnswers);
+  };
+
+  // randomize words to quess
+  const shuffle = (array) => {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
+    }
+    return shuffledArray;
+  };
+
+  return (
+    &lt;div id="learningenglish">
+      &lt;h1>English to Finnish&lt;/h1>
+      {/* Map through learning array and display each item */}
+      {learning.map((item, index) => (
+        &lt;div key={item.id} style={{ display: "flex", alignItems: "center" }}>
+          &lt;div style={{ marginRight: "10px" }}>{item.english}&lt;/div>
+          {/* Input to guess */}
+          &lt;input
+            type="text"
+            id={`questin-${index}`}
+            name={`question-${index}`}
+            value={quessFinnish[index]}
+            onChange={(e) => handlequesses(index, e.target.value, item)}
+          />
+          &lt;span style={{ marginLeft: "10px" }}>{feedback[index]}&lt;/span>
+          {/* Display total correct answers */}
+          {/*show feedback correct wrong */}
+        &lt;/div>
+      ))}
+      &lt;button onClick={handleCheckButton}>Tarkista&lt;/button>
+      &lt;p>
+        Oikein vastatut: {countCorrectAnswers}/{TotalQuestions}
+      &lt;/p>
+      &lt;p style={{ fontSize: "50px" }}>
+        {countCorrectAnswers === 0
+          ? " "
+          : countCorrectAnswers &lt; 5
+          ? "😵‍💫"
+          : countCorrectAnswers &lt; 10
+          ? "😎"
+          : "🎉🤩"}
+      &lt;/p>
+    &lt;/div>
+  );
+}
+
+export default LearnFinnish;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AdminPage">AdminPage</a></li><li><a href="global.html#DeleteData">DeleteData</a></li><li><a href="global.html#LearnEnglish">LearnEnglish</a></li><li><a href="global.html#LearnFinnish">LearnFinnish</a></li><li><a href="global.html#Login">Login</a></li><li><a href="global.html#ModifyData">ModifyData</a></li><li><a href="global.html#PostWords">PostWords</a></li><li><a href="global.html#fetchAll">fetchAll</a></li><li><a href="global.html#handleCheckButton">handleCheckButton</a></li><li><a href="global.html#handleInputChange">handleInputChange</a></li><li><a href="global.html#handlequesses">handlequesses</a></li><li><a href="global.html#shuffle">shuffle</a></li><li><a href="global.html#toggleEditMode">toggleEditMode</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Jan 04 2024 15:09:15 GMT+0200 (Itä-Euroopan normaaliaika)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

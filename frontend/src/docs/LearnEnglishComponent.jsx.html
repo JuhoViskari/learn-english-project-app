@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: LearnEnglishComponent.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: LearnEnglishComponent.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from "react";
+/**
+ * LearnEnglish component for user to learn English
+ *
+ * @component
+ * @example
+ * // Usage of LearnEnglish component
+ * &lt;LearnEnglish />
+ *
+ * @returns {JSX.Element} The JSX representation of the LearnEnglish component.
+ */
+function LearnEnglish() {
+  const [learning, setLearning] = useState([]);
+  const [quessEnglish, setQuessEnglish] = useState([]);
+  const [feedback, setFeedback] = useState([]);
+  const [countCorrectAnswers, setCountCorrectAnswers] = useState([]);
+  // total count of questions
+  const TotalQuestions = learning.length;
+
+  /**
+   * useEffect hook to fetch learning data when the component mounts.
+   */
+  useEffect(() => {
+    /**
+     * Fetch all learning data from the server and randomize data and
+     * showing 10 words.
+     *
+     * @async
+     * @function
+     * @name fetchAll
+     * @throws {Error} If there is an error fetching data.
+     */
+    const fetchAll = async () => {
+      try {
+        //developing fetch
+        // const response = await fetch("http://localhost:8080/api/learn");
+        const response = await fetch("/api/learn");
+        const data = await response.json();
+        // call randomized data
+        const shuffledLearning = shuffle(data);
+        // intialize 10 limit
+        const showTenItems = shuffledLearning.slice(0, 10);
+        setLearning(showTenItems);
+        // Reset the current question when fetching new random data
+        setQuessEnglish(Array(showTenItems.length).fill(""));
+        // reset correct answers when fetch new data
+        setCountCorrectAnswers(0);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    };
+
+    // Call the fetchAll function to initiate data fetching
+    fetchAll();
+  }, []);
+
+  /**
+   * Update the user's guesses for the English translations of displayed words.
+   *
+   * @function
+   * @name handlequesses
+   * @param {number} index - The index of the word in the displayed list.
+   * @param {string} value - The user's guess for the English translation.
+   * @returns {void} This function does not return a value.
+   */
+  const handlequesses = (index, value) => {
+    // copy current guess array
+    const newGuesses = [...quessEnglish];
+    // Update the guess to specific word
+    newGuesses[index] = value;
+    setQuessEnglish(newGuesses);
+  };
+  /**
+   * Check user guesses are it's correct and give feedback
+   *
+   * @function
+   * @name handleCheckButton
+   * @param {number} index - The index of the word in the displayed list.
+   * @param {string} value - The user's guess for the English translation.
+   * @returns {Array&lt;string>} An array containing feedback for each word.
+   */
+  // check is value correct or incorrect map item and index
+  const handleCheckButton = () => {
+    const newFeedback = learning.map((item, index) => {
+      // user guess for correct answer convert lowercase
+      const value = quessEnglish[index].toLowerCase();
+      // check is user guess correct
+      if (value === item.english.toLowerCase()) {
+        //increment count of correct answers
+        setCountCorrectAnswers(countCorrectAnswers + 1);
+        // feedbacks for correct answers if wrong give correct answer
+        return "✅";
+      } else {
+        return `❌ ${item.english}`;
+      }
+    });
+
+    // state variable get parameter newFeedBack
+    setFeedback(newFeedback);
+    // if fb === with correct answers filter lenght
+    const newCountCorrectAnswers = newFeedback.filter(
+      (fb) => fb === "✅"
+    ).length;
+    setCountCorrectAnswers(newCountCorrectAnswers);
+  };
+
+  /**
+   * Randomize the order of elements in an array using the Fisher-Yates shuffle algorithm.
+   *
+   * @function
+   * @name shuffle
+   * @param {Array} array - The array to be shuffled.
+   * @returns {Array} A new array with elements in a randomized order.
+   */
+  const shuffle = (array) => {
+    //copy of array modifying original array
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      // randomise
+      const j = Math.floor(Math.random() * (i + 1));
+      // swap element at indices i and j
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
+    }
+    return shuffledArray;
+  };
+
+  return (
+    &lt;div id="learningenglish">
+      &lt;h1>Suomesta englanniksi 🏴󠁧󠁢󠁥󠁮󠁧󠁿&lt;/h1>
+      {/* Map through learning array and display each item */}
+      {learning.map((item, index) => (
+        &lt;div key={item.id} style={{ display: "flex", alignItems: "center" }}>
+          &lt;div style={{ marginRight: "10px" }}>{item.finnish}&lt;/div>
+          {/* Input to guess */}
+          &lt;input
+            type="text"
+            id={`questin-${index}`}
+            name={`question-${index}`}
+            value={quessEnglish[index]}
+            onChange={(e) => handlequesses(index, e.target.value, item)}
+          />
+          &lt;span style={{ marginLeft: "10px" }}>{feedback[index]}&lt;/span>
+          {/* Display total correct answers */}
+          {/*show feedback correct wrong */}
+        &lt;/div>
+      ))}
+      &lt;button onClick={handleCheckButton}>Tarkista&lt;/button>
+      &lt;p>
+        Oikein vastatut: {countCorrectAnswers}/{TotalQuestions}
+      &lt;/p>
+      &lt;p style={{ fontSize: "50px" }}>
+        {countCorrectAnswers === 0
+          ? " "
+          : countCorrectAnswers &lt; 5
+          ? "😵‍💫"
+          : countCorrectAnswers &lt; 10
+          ? "😎"
+          : "🎉🤩"}
+      &lt;/p>
+    &lt;/div>
+  );
+}
+
+export default LearnEnglish;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AdminPage">AdminPage</a></li><li><a href="global.html#DeleteData">DeleteData</a></li><li><a href="global.html#LearnEnglish">LearnEnglish</a></li><li><a href="global.html#LearnFinnish">LearnFinnish</a></li><li><a href="global.html#Login">Login</a></li><li><a href="global.html#ModifyData">ModifyData</a></li><li><a href="global.html#PostWords">PostWords</a></li><li><a href="global.html#fetchAll">fetchAll</a></li><li><a href="global.html#handleCheckButton">handleCheckButton</a></li><li><a href="global.html#handleInputChange">handleInputChange</a></li><li><a href="global.html#handlequesses">handlequesses</a></li><li><a href="global.html#shuffle">shuffle</a></li><li><a href="global.html#toggleEditMode">toggleEditMode</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Jan 04 2024 15:09:15 GMT+0200 (Itä-Euroopan normaaliaika)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
