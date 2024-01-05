@@ -104,9 +104,9 @@ function LearnFinnish() {
           {/*show feedback correct wrong */}
         </div>
       ))}
-      <button onClick={handleCheckButton}>Tarkista</button>
+      <button onClick={handleCheckButton}>Check</button>
       <p>
-        Oikein vastatut: {countCorrectAnswers}/{TotalQuestions}
+        Correct answers: {countCorrectAnswers}/{TotalQuestions}
       </p>
       <p style={{ fontSize: "50px" }}>
         {countCorrectAnswers === 0
