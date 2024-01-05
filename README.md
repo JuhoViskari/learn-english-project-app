@@ -7,6 +7,37 @@ to kids. There is always 10 randomized words to play and webpage will give corre
 
 Then there is Admin page behind username and password where Admin can add new words, delete words and update words.
 
+# Motivation
+
+Motivation behind the creation was that this was pretty interesting school
+project work and motivation came by backend development teacher to make
+learn english web application
+
+# Screenshots
+
+![Alt text](le.png "Optional Title")
+![Alt text](login.png "Optional Title")
+![Alt text](ad.png "Optional Title")
+
+# Tech/framework used
+
+Frontend dependencies:
+
+- react to using react components
+- react-dom using react components
+- react-router-dom using routes with react components
+
+Backend dependencies:
+
+- cors frontend and backend work together different server
+- dotenv to env file
+- express making routes to backend
+- mysql backend can communicate with mySql database
+
+Global dependencie:
+
+- concurrently npm start open frontend and backend same time
+
 # Link to webpage
 
 https://learnenglish-2st0.onrender.com/
@@ -20,12 +51,6 @@ Password: password
 # Author
 
 Juho Viskari
-
-# Screenshots
-
-![Alt text](le.png "Optional Title")
-![Alt text](login.png "Optional Title")
-![Alt text](ad.png "Optional Title")
 
 # Tech/framework used
 
