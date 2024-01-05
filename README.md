@@ -21,6 +21,8 @@ learn english web application
 
 # Tech/framework used
 
+Languages used: Node.js, React.jsx
+
 Frontend dependencies:
 
 - react to using react components
@@ -38,7 +40,19 @@ Global dependencie:
 
 - concurrently npm start open frontend and backend same time
 
-# Link to webpage
+# Installation
+
+git clone https://github.com/JuhoViskari/learn-english-project-app
+
+npm install root file
+You have to make .env file backend root and change backend/config.js file
+and make your own MySQL connection and env secret keys
+
+MySQL table name: learn and columns id, english, finnish
+
+After connections backend and frontend start npm start from root directory
+
+# API Reference
 
 https://learnenglish-2st0.onrender.com/
 
@@ -48,35 +62,12 @@ Username: admin
 
 Password: password
 
-# Author
-
-Juho Viskari
-
-# Tech/framework used
-
-Languages used: Node.js, React.jsx
-
-Modules used:
-
-- javax.swing.JOptionPane which is main part of GUI input
-- java.io.BufferedReader read text from file line by line when load client
-- java.io.FileReader take file name and open file to reading when load client
-- java.io.FileWriter take file name and write to file when saving client
-- java.io.IOException makes IOException if loading or saving there is problem
-- java.io.PrintWriter write formated text to clients.txt
-- java.util.ArrayList stores dynamic array for adding, removing and access
-  elements
-
-# Installation and running
-
-#clone repo
-
-git clone https://github.com/JuhoViskari/project-work-juho-viskari
-
-#runs
-
-cd project-work-juho-viskari/src/ && javac \*ContactsApp.java && java ContactsApp
-
 # Screencast
 
 [![My video](https://img.youtube.com/vi/mC5o7cBIfYg/0.jpg)](https://www.youtube.com/watch?v=mC5o7cBIfYg)
+
+# License
+
+A short snippet describing the license (MIT, Apache etc)
+
+MIT © Juho Viskari
