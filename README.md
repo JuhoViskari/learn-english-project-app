@@ -64,7 +64,7 @@ Password: password
 
 # Screencast
 
-[![My video](https://img.youtube.com/vi/mC5o7cBIfYg/0.jpg)](https://www.youtube.com/watch?v=mC5o7cBIfYg)
+[![My video](https://img.youtube.com/vi/_sl-UCnMAFE/0.jpg)](https://www.youtube.com/watch?v=_sl-UCnMAFE)
 
 # License
 
