@@ -66,8 +66,6 @@ Password: password
 
 [![My video](https://img.youtube.com/vi/_sl-UCnMAFE/0.jpg)](https://www.youtube.com/watch?v=_sl-UCnMAFE)
 
-# License
+# Author
 
-A short snippet describing the license (MIT, Apache etc)
-
-MIT © Juho Viskari
+Juho Viskari
